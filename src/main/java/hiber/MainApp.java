@@ -30,6 +30,8 @@ public class MainApp {
          System.out.println("Car = " + user.getCar());
          System.out.println();
       }
+      System.out.println("-------------------------------------------------------------------");
+      System.out.println(userService.getUserByeCar(new Car("Mazda Demio", 102355)));
 
       context.close();
    }
