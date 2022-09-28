@@ -3,7 +3,6 @@ package hiber.dao;
 import hiber.model.Car;
 import hiber.model.User;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,16 +28,12 @@ public class UserDaoImp implements UserDao {
    }
 
    @Override
-   @SuppressWarnings("unchecked")
-   public List<User> getUserByeCar(Car car) { // создал фунекцию, возвращающую List<User>, а не конкретный обьект User
-                                             // по причине того, что на данный момент придерживаюсь идеи, что в базе нет
-                                             // поля, или пруппы полей, являющихся уникальными,
-                                             // а значит и результат запроса не может быть в одном экземпляре
-                                             // если нужно будет переделать, это не проблема
-      return  sessionFactory.getCurrentSession().createQuery("from User where car.model = ?1 and car.series = ?2")
+   public User getUserByeCar(Car car) {
+      //решено модификацией таблиц баз данных через добавление в полю model модификатора UNIQUE
+      TypedQuery<User> query =  sessionFactory.getCurrentSession().createQuery("from User where car.model = ?1 and car.series = ?2")
               .setParameter(1, car.getModel())
-              .setParameter(2, car.getSeries())
-              .getResultList();
+              .setParameter(2, car.getSeries());
+      return query.getSingleResult();
    }
 
 }
